@@ -5,8 +5,8 @@ It uses [[https://github.com/curl/curl][curl]] to send files with MIME type [[ht
 This tool exits because I was too lazy to go get my usb cable. :)
 
 ** Requirement
- [[https://just.systems/][Just]] is optional, but if you want there is a Justfile in case.
- [[https://go.dev][Go(Golang)]] obv.
+ *** [[https://just.systems/][Just]] is optional, but if you want there is a Justfile in case.
+ *** [[https://go.dev][Go(Golang)]] obv.
 
 ** Usage
 *** Server side
