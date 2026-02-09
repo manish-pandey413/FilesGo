@@ -5,21 +5,28 @@ It uses [[https://github.com/curl/curl][curl]] to send files with MIME type [[ht
 This tool exits because I was too lazy to go get my usb cable. :)
 
 ** Requirement
- *** [[https://just.systems/][Just]] is optional, but if you want there is a Justfile in case.
- *** [[https://go.dev][Go(Golang)]] obv.
+ + [[https://just.systems/][Just]] is optional, but if you want there is a Justfile in case.
+ + [[https://go.dev][Go(Golang)]] obv.
 
 ** Usage
-*** Server side
++ Server side :: i.e the device you want file to be sent.
 #+begin_src sh
 git clone https://github.com/manish-pandey413/FilesGo 
 cd FilesGo/
 #+end_src
-**** Using Just
++ Using Just
 #+begin_src
 just run
 #+end_src
-**** Using normal go commands
++ Using normal go commands
 #+begin_src
 cd cmd/FilesGo
 go run .
 #+end_src
+
++ Client Side :: Note the ip address that will be displayed after go run/ just run.
+#+begin_src
+curl -v -F --file="@fileYouWantToSend" ipAddress:8080/upload/
+#+end_src
+
+Note that @ is important as it represents file is being sent as a binary, and :8080 is port and /upload/ is endpoint.
