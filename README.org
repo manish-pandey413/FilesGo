@@ -15,17 +15,17 @@ git clone https://github.com/manish-pandey413/FilesGo
 cd FilesGo/
 #+end_src
 + Using Just
-#+begin_src
+#+begin_src sh
 just run
 #+end_src
 + Using normal go commands
-#+begin_src
+#+begin_src sh
 cd cmd/FilesGo
 go run .
 #+end_src
 
 + Client Side :: Note the ip address that will be displayed after go run/ just run.
-#+begin_src
+#+begin_src sh
 curl -v -F --file="@fileYouWantToSend" ipAddress:8080/upload/
 #+end_src
 
