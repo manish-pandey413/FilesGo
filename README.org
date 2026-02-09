@@ -1,0 +1,25 @@
+#+title: FilesGo
+
+A command line tool to share files across device, made using [[https://go.dev][Golang]].
+It uses [[https://github.com/curl/curl][curl]] to send files with MIME type [[https://en.wikipedia.org/wiki/MIME#form-data][multipart/form-data]].
+This tool exits because I was too lazy to go get my usb cable. :)
+
+** Requirement
+ [[https://just.systems/][Just]] is optional, but if you want there is a Justfile in case.
+ [[https://go.dev][Go(Golang)]] obv.
+
+** Usage
+*** Server side
+#+begin_src sh
+git clone https://github.com/manish-pandey413/FilesGo 
+cd FilesGo/
+#+end_src
+**** Using Just
+#+begin_src
+just run
+#+end_src
+**** Using normal go commands
+#+begin_src
+cd cmd/FilesGo
+go run .
+#+end_src
