@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"net"
@@ -10,12 +11,37 @@ import (
 )
 
 func main() {
-	mux := http.NewServeMux()
 
-	mux.Handle("/upload/{$}", http.HandlerFunc(handler.ExtractFile))
+	webMode := flag.Bool("webMode", false, "Set true to use web mode.")
+	path := flag.String("dir", "./", "Directory to share")
+	flag.Parse()
+
+	normalMux := http.NewServeMux()
+	normalMux.HandleFunc("/upload/{$}", handler.ExtractFile)
+
+	var (
+		webModeMux *http.ServeMux
+		fileServer http.Handler
+	)
+	if *webMode {
+		webModeMux = http.NewServeMux()
+
+		fileServer = http.FileServer(http.Dir(*path))
+		webModeMux.Handle("GET /", fileServer)
+	}
+
+	handler := normalMux
+	if *webMode {
+		handler = webModeMux
+	}
+
+	server := &http.Server{
+		Addr:    ":8080",
+		Handler: handler,
+	}
 
 	go func() {
-		if err := http.ListenAndServe(":8080", mux); err != nil {
+		if err := server.ListenAndServe(); err != nil {
 			log.Fatalf("%s", err.Error())
 			return
 		}
