@@ -6,9 +6,9 @@ AppName := "FilesGo"
 
 # Run the cmd/FilesGo application
 [no-exit-message]
-@run:
+@run *args:
   echo "Running {{AppName}}..."
-  go run ./cmd/{{AppName}}
+  go run ./cmd/{{AppName}} {{args}}
 
 # Only installs the imports using go get
 @install:
