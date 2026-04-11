@@ -9,6 +9,8 @@ This tool exits because I was too lazy to go get my usb cable. :)
  + [[https://go.dev][Go(Golang)]] obv.
 
 ** Usage
+*** Normal Mode
+There are two modes, normal and webMode.
 + Server side :: i.e the device you want file to be sent.
 #+begin_src sh
 git clone https://github.com/manish-pandey413/FilesGo 
@@ -30,3 +32,23 @@ curl -v -F --file="@fileYouWantToSend" ipAddress:8080/upload/
 #+end_src
 
 Note that @ is important as it represents file is being sent as a binary, and :8080 is port and /upload/ is endpoint.
+
+*** Web Mode
+Web mode serves all the files inside the current directory (by default) or files inside directory provided using -dir flag.
+It uses [[https://pkg.go.dev/net/http#FileServer][http.FileServer]] to serve all the given directory.
+
+#+BEGIN_QUOTE
+*Note:* If -dir flag is not provided then the current directory from which the command is called will be served.
+#+END_QUOTE
+
++ Using Just
+#+begin_src sh
+just run -webMode -dir=./
+#+end_src
++ Using normal go commands
+#+begin_src sh
+cd cmd/FilesGo
+go run . -webMode -dir=./
+#+end_src
+
+Replace "./" with any directory you want to serve.
