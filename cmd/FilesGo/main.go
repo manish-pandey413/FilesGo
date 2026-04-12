@@ -2,11 +2,11 @@ package main
 
 import (
 	"flag"
-	"fmt"
-	"log"
 	"net"
 	"net/http"
+	"os"
 
+	"github.com/manish-pandey413/FilesGo/internal/config"
 	"github.com/manish-pandey413/FilesGo/internal/handler"
 )
 
@@ -17,12 +17,12 @@ func main() {
 	flag.Parse()
 
 	normalMux := http.NewServeMux()
-	normalMux.HandleFunc("/upload/{$}", handler.ExtractFile)
 
 	var (
 		webModeMux *http.ServeMux
 		fileServer http.Handler
 	)
+
 	if *webMode {
 		webModeMux = http.NewServeMux()
 
@@ -30,19 +30,19 @@ func main() {
 		webModeMux.Handle("GET /", fileServer)
 	}
 
-	handler := normalMux
+	serveMux := normalMux
 	if *webMode {
-		handler = webModeMux
+		serveMux = webModeMux
 	}
 
-	server := &http.Server{
-		Addr:    ":8080",
-		Handler: handler,
-	}
+	cfg := config.New(serveMux)
+
+	normalMux.HandleFunc("POST /upload/{$}", handler.ExtractFile)
 
 	go func() {
-		if err := server.ListenAndServe(); err != nil {
-			log.Fatalf("%s", err.Error())
+		if err := cfg.App.Server.ListenAndServe(); err != nil {
+			cfg.App.Logger.Error(err.Error())
+			os.Exit(1)
 			return
 		}
 	}()
@@ -51,7 +51,7 @@ func main() {
 	localAddr := conn.LocalAddr().(*net.UDPAddr)
 	conn.Close()
 
-	fmt.Printf("Running server on %s\n", localAddr.IP.String())
+	cfg.App.Logger.Info("Server up and running", "IP", localAddr.IP.String(), "Port", "8080")
 
 	select {}
 }
