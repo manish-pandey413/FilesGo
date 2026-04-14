@@ -8,6 +8,7 @@ import (
 
 	"github.com/manish-pandey413/FilesGo/internal/config"
 	"github.com/manish-pandey413/FilesGo/internal/handler"
+	"github.com/manish-pandey413/FilesGo/internal/middleware"
 )
 
 func main() {
@@ -27,7 +28,7 @@ func main() {
 		webModeMux = http.NewServeMux()
 
 		fileServer = http.FileServer(http.Dir(*path))
-		webModeMux.Handle("GET /", fileServer)
+		webModeMux.Handle("GET /", middleware.NoCache(fileServer))
 	}
 
 	serveMux := normalMux
